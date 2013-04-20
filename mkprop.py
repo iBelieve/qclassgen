@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#!/usr/bin/env python
 
 # QProperty Maker - Qt property generator
 # Copyright (C) 2013  Michael Spencer <spencers1993@gmail.com>
