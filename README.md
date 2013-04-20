@@ -27,4 +27,4 @@ Because `moc` doesn't search the include path, the source file needs to be in th
 
     cp test.cpp build/test.cpp
     
-`build/test.h` and `build/test.cpp` will be the actual code used by `moc`. Make sure you add `build` to your list of include directories, and add `build.test.cpp` to the list of source files.
+`build/test.h` and `build/test.cpp` will be the actual code used by `moc`. Make sure you add `build` to your list of include directories, and add `build/test.cpp` to the list of source files.
