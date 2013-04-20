@@ -35,7 +35,9 @@ def search(text):
 	while m:
 		indent = m.group(1)
 		name = m.group(2)
-		replacement = open(name + '.gen').read()
+		#replacement = open(name + '.gen').read()
+		# Quicker: assume file just generated
+		replacement = header
 		replacement = indent + replacement.replace('\n', indent)
 		#print replacement
 		text = text.replace(m.group(0), replacement)
@@ -43,14 +45,10 @@ def search(text):
 	return text
 
 def replace():
-	f_in = open(sys.argv[2])
-	print 'Processing ' + sys.argv[2]
-	if len(sys.argv) > 3:
-		f_out = open(sys.argv[3], 'w')
-	else:
-		f_out = sys.stdout
-	text = search(f_in.read())
-	f_out.write(text)
+	print 'Including generated code...'
+	output = search(input)
+	f_out = open(sys.argv[3], 'w')
+	f_out.write(output)
 
 def process(lines, line):
 	global public, public_slots, protected, private, signals
@@ -107,27 +105,18 @@ def process(lines, line):
 	return
 
 def generate():
-	f_in = open(sys.argv[2])
-	print 'Processing ' + sys.argv[2]
-	if len(sys.argv) > 3:
-		f_out = open(sys.argv[3], 'w')
-	else:
-		f_out = sys.stdout
-	lines = [line.strip() for line in f_in.readlines()]
+	global input, header
+	f_in = open(sys.argv[1])
+	print 'Processing...'
+	f_gen = open(sys.argv[2], 'w')
+	input = f_in.read()
+	lines = [line.strip() for line in input.split('\n')]
 	[process(lines, line) for line in lines]
-	f_out.write(public + '\n' + public_slots + '\n' + protected + '\n' + private + '\n' + signals)
+	header = public + '\n' + public_slots + '\n' + protected + '\n' + private + '\n' + signals
+	f_gen.write(header)
 
 if __name__=='__main__':
-	help = 'mkprop gen|replace header [out]'
+	help = 'mkprop header gen [out]'
 	
-	if len(sys.argv) > 1:
-		cmd = sys.argv[1]
-	
-		if cmd == 'gen':
-			generate()
-		elif cmd == 'replace':
-			replace()
-		else:
-			print help
-	else:
-		print help
+	generate()
+	replace()

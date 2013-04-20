@@ -19,9 +19,12 @@ In your class definition, include the generated code:
     #include "test.gen"
     }
 
-You need to run `mkprop` in two stages. First, build the missing components:
+Then, you need to run `mkprop` on it:
 
-    mkprop gen test.h test.gen
-    mkprop replace test.h build/test.h
+    mkprop test.h build/test.gen build/test.h
 
-`build/test.h` will be the actual header used by `moc` and included by your program.
+Because `moc` doesn't search the include path, the source file needs to be in the same directory as the generated header:
+
+    cp test.cpp build/test.cpp
+    
+`build/test.h` and `build/test.cpp` will be the actual code used by `moc`. Make sure you add `build` to your list of include directories, and add `build.test.cpp` to the list of source files.
