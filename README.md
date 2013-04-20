@@ -9,7 +9,7 @@ QProperty Maker is free software; you can redistribute it and/or modify it under
 
 ### How to Use ###
 
-In your class defintion, include the generated code:
+In your class definition, include the generated code:
 
     class Test {
         Q_OBJECT

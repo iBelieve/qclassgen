@@ -25,9 +25,9 @@ public_slots = 'public slots:\n'
 signals = 'signals:\n'
 
 def find_start(lines, search):
-    for line in lines:
-        if line.startswith(search):
-            return line
+	for line in lines:
+		if line.startswith(search):
+			return line
 
 def search(text):
 	p = re.compile('^(\\s*?)#include \"(.*)\\.gen\"\\s*$', re.MULTILINE)
@@ -57,6 +57,8 @@ def process(lines, line):
 
 	if not(line.startswith('Q_PROPERTY')):
 		return
+	
+	print line
 
 	# Extract the name and type
 	p = re.compile('Q_PROPERTY\\((\\w*[\\s\\*]*)(\\w*)\\s*READ\\s*(\\w*)')
