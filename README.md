@@ -1,11 +1,11 @@
-QProperty Maker - Qt property generator
+QProperty Generator
 ================================
 
 Generates missing functions, signals, and variables based on `Q_PROPERTY` definitions.
 
 ### Licensing ###
 
-QProperty Maker is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
+QProperty Generator is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
 
 ### How to Use ###
 
