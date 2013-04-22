@@ -1,7 +1,9 @@
-find_program( CLASSGEN_EXECUTABLE classgen DOC "Class Generator" )
-if( NOT CLASSGEN_EXECUTABLE )
-   message( SEND_ERROR "Failed to find Class Generator." )
-endif( NOT CLASSGEN_EXECUTABLE )
+#find_program( CLASSGEN_EXECUTABLE classgen DOC "Class Generator" )
+#if( NOT CLASSGEN_EXECUTABLE )
+   #message( SEND_ERROR "Failed to find Class Generator." )
+#endif( NOT CLASSGEN_EXECUTABLE )
+
+set(CLASSGEN_EXECUTABLE ${CMAKE_CURRENT_LIST_DIR}/classgen.py)
 
 # - Pass a list of files through the Qt Property Generator
 #
@@ -11,8 +13,8 @@ endif( NOT CLASSGEN_EXECUTABLE )
 #          to be passed to add_executable or add_library.
 #
 # Example:
-#  add_m4_sources( SRCS src/test1.cxx.m4 src/test2.cxx.m4 )
-function(PROCESS OUTVAR)
+#  classgen(SRCS src/test1 src/test2)
+function(CLASSGEN OUTVAR)
    set( outfiles )
    foreach( f ${ARGN} )
      # first we might need to make the input file absolute
@@ -36,7 +38,7 @@ function(PROCESS OUTVAR)
      add_custom_command(OUTPUT "${gen_f}" "${header_out}"
          COMMAND ${CLASSGEN_EXECUTABLE}
          ARGS "${header_in}" "${gen_f}" "${header_out}"
-         DEPENDS "${heaer_in}"
+         DEPENDS "${heaer_in}" "${CLASSGEN_EXECUTABLE}"
          WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}"
        )
      add_custom_command(OUTPUT "${source_out}"
@@ -52,6 +54,6 @@ function(PROCESS OUTVAR)
    #qt4_automoc(${outfiles})
    # set the output list in the calling scope
    set(${OUTVAR} ${${OUTVAR}} ${outfiles} PARENT_SCOPE )
-endfunction( PROCESS )
+endfunction( CLASSGEN )
 
 include_directories(BEFORE ${CMAKE_CURRENT_BINARY_DIR})
