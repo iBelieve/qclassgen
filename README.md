@@ -19,12 +19,20 @@ In your class definition, include the generated code:
     #include "test.gen"
     }
 
-Then, you need to run `classgen` on it:
+Then, you need to run `qclassgen` on it:
 
-    classgen test.h build/test.gen build/test.h
+    qclassgen test.h build/test.gen build/test.h
 
 Because `moc` doesn't search the include path, the source file needs to be in the same directory as the generated header:
 
     cp test.cpp build/test.cpp
     
 `build/test.h` and `build/test.cpp` will be the actual code used by `moc`. Make sure you add `build` to your list of include directories, and add `build/test.cpp` to the list of source files.
+
+### Using in CMake ###
+
+Simply include `qclassgen.cmake` and then call
+
+    qclassgen(SRC test)
+
+For you source var of `SRC` and a C++ source/header of `test.cpp` and `test.h`

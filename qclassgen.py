@@ -116,7 +116,11 @@ def generate():
 	f_gen.write(header)
 
 if __name__=='__main__':
-	help = 'classgen header gen [out]'
+	help = '`classgen header gen [out]'
 	
-	generate()
-	replace()
+	if len(sys.argv) == 4:
+		generate()
+		replace()
+		
+	else
+		print help
