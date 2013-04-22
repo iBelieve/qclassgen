@@ -38,7 +38,7 @@ function(QCLASSGEN OUTVAR)
      add_custom_command(OUTPUT "${gen_f}" "${header_out}"
          COMMAND ${CLASSGEN_EXECUTABLE}
          ARGS "${header_in}" "${gen_f}" "${header_out}"
-         DEPENDS "${heaer_in}" "${CLASSGEN_EXECUTABLE}"
+         DEPENDS "${header_in}" "${CLASSGEN_EXECUTABLE}"
          WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}"
        )
      add_custom_command(OUTPUT "${source_out}"
@@ -48,7 +48,7 @@ function(QCLASSGEN OUTVAR)
        )
      qt4_generate_moc(${header_out} ${moc_f})
      # append the output file to the list of outputs
-     list( APPEND outfiles "${source_out}" "${header_out}")
+     list(APPEND outfiles "${source_out}" "${header_out}")
    endforeach(f)
    #qt4_automoc(${outfiles})
    # set the output list in the calling scope

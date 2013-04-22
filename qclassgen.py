@@ -86,7 +86,7 @@ def process(lines, line):
 		if type.endswith('*'):
 			func += ' = 0'
 		func += ';\n'
-		if write: private += func
+		if write or notify: private += func
 		else: protected += func
 
 	if not(find_start(lines, type + read + '(')):
@@ -100,6 +100,15 @@ def process(lines, line):
 		if notify:
 			public_slots += '\t\temit ' + notify + '(' + name + ');\n'
 		public_slots += '\t}\n'
+		
+	writeName = 'set' + name[0].upper() + name[1:]
+	
+	if not(write) and notify and not(find_start(lines, 'void ' + writeName + '(')):
+		protected += ('\tvoid ' + writeName + '(' + type + name + ') {\n' +
+				'\t\tm_' + name + ' = ' + name + ';\n')
+		if notify:
+			protected += '\t\temit ' + notify + '(' + name + ');\n'
+		protected += '\t}\n'
 
 	if notify and not(find_start(lines, 'void ' + notify + '(')):
 		signals += '\tvoid ' + notify + '(' + type + name + ');\n'
@@ -118,7 +127,14 @@ def generate():
 	f_gen.write(header)
 
 if __name__=='__main__':
-	help = '`classgen header gen [out]'
+	help = ('Class Generator - Automatically generate parts of Qt classes.\n' +
+			'\n' +
+			'Usage: qclassgen header gen out\n' + 
+			'\n' + 
+			'Where the arguments are:\n' +
+			'  header  The header to parse\n' +
+			'  gen     The generated code, used by IDEs so it can be imported\n' +
+			'  out     The finished header, with the generated code included')
 	
 	if len(sys.argv) == 4:
 		generate()
