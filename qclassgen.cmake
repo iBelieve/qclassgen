@@ -46,7 +46,6 @@ function(QCLASSGEN OUTVAR)
          ARGS "${source_in}" "${source_out}"
          DEPENDS "${source_in}" "${header_out}"
        )
-     message("Moc: ${header_out}, ${moc_f}")
      qt4_generate_moc(${header_out} ${moc_f})
      # append the output file to the list of outputs
      list( APPEND outfiles "${source_out}" "${header_out}")
@@ -55,5 +54,3 @@ function(QCLASSGEN OUTVAR)
    # set the output list in the calling scope
    set(${OUTVAR} ${${OUTVAR}} ${outfiles} PARENT_SCOPE )
 endfunction( QCLASSGEN )
-
-include_directories(BEFORE ${CMAKE_CURRENT_BINARY_DIR})

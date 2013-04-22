@@ -96,10 +96,12 @@ def process(lines, line):
 
 	if write and not(find_start(lines, 'void ' + write + '(')):
 		public_slots += ('\tvoid ' + write + '(' + type + name + ') {\n' +
-				'\t\tm_' + name + ' = ' + name + ';\n' +
-				'\t}\n')
+				'\t\tm_' + name + ' = ' + name + ';\n')
+		if notify:
+			public_slots += '\t\temit ' + notify + '(' + name + ');\n'
+		public_slots += '\t}\n'
 
-	if not(find_start(lines, 'void ' + notify + '(')):
+	if notify and not(find_start(lines, 'void ' + notify + '(')):
 		signals += '\tvoid ' + notify + '(' + type + name + ');\n'
 
 	return
