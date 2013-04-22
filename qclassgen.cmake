@@ -3,7 +3,7 @@
    #message( SEND_ERROR "Failed to find Class Generator." )
 #endif( NOT CLASSGEN_EXECUTABLE )
 
-set(CLASSGEN_EXECUTABLE ${CMAKE_CURRENT_LIST_DIR}/classgen.py)
+set(CLASSGEN_EXECUTABLE ${CMAKE_CURRENT_LIST_DIR}/qclassgen.py)
 
 # - Pass a list of files through the Qt Property Generator
 #
@@ -14,7 +14,7 @@ set(CLASSGEN_EXECUTABLE ${CMAKE_CURRENT_LIST_DIR}/classgen.py)
 #
 # Example:
 #  classgen(SRCS src/test1 src/test2)
-function(CLASSGEN OUTVAR)
+function(QCLASSGEN OUTVAR)
    set( outfiles )
    foreach( f ${ARGN} )
      # first we might need to make the input file absolute
@@ -54,6 +54,6 @@ function(CLASSGEN OUTVAR)
    #qt4_automoc(${outfiles})
    # set the output list in the calling scope
    set(${OUTVAR} ${${OUTVAR}} ${outfiles} PARENT_SCOPE )
-endfunction( CLASSGEN )
+endfunction( QCLASSGEN )
 
 include_directories(BEFORE ${CMAKE_CURRENT_BINARY_DIR})
