@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# QProperty Maker - Qt property generator
+# Class Generator - Automatically generate parts of Qt classes.
 # Copyright (C) 2013  Michael Spencer <spencers1993@gmail.com>
 #
 # This program is free software: you can redistribute it and/or modify
@@ -116,7 +116,7 @@ def generate():
 	f_gen.write(header)
 
 if __name__=='__main__':
-	help = 'mkprop header gen [out]'
+	help = 'classgen header gen [out]'
 	
 	generate()
 	replace()
