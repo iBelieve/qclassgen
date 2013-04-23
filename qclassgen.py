@@ -59,7 +59,8 @@ def process(lines, line):
 	print line
 
 	# Extract the name and type
-	p = re.compile('Q_PROPERTY\\((\\w*[\\s\\*]*)(\\w*)\\s*READ\\s*(\\w*)')
+	type = '([\\w:\\<]*[\\s\\*\\>]*)'
+	p = re.compile('Q_PROPERTY\\(' + type + '(\\w*)\\s*READ\\s*(\\w*)')
 	m = p.match(line)
 	if not(m):
 		raise BaseException('Invalid property: ' + line)
