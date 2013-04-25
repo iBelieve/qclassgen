@@ -83,12 +83,12 @@ def process(lines, line):
 		notify = m.group(1)
 
 	if not(find_start(lines, type + 'm_' + name)):
-		func =  '\t' + type + 'm_' + name;
+		code =  '\t' + type + 'm_' + name;
 		if type.endswith('*'):
-			func += ' = 0'
-		func += ';\n'
-		if write or notify: private += func
-		else: protected += func
+			code += ' = 0'
+		code += ';\n'
+		if write or notify: private += code
+		else: protected += code
 
 	if not(find_start(lines, type + read + '(')):
 		public += ('\t' + type + read + '() {\n' + 
@@ -104,7 +104,7 @@ def process(lines, line):
 		
 	writeName = 'set' + name[0].upper() + name[1:]
 	
-	if not(write) and notify and not(find_start(lines, 'void ' + writeName + '(')):
+	if not(write) and not(find_start(lines, 'void ' + writeName + '(')):
 		protected += ('\tvoid ' + writeName + '(' + type + name + ') {\n' +
 				'\t\tm_' + name + ' = ' + name + ';\n')
 		if notify:
