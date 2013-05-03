@@ -59,14 +59,14 @@ def process(lines, line):
 	print line
 
 	# Extract the name and type
-	type = '([\\w:\\<]*[\\s\\*\\>]*)'
-	p = re.compile('Q_PROPERTY\\(' + type + '(\\w*)\\s*READ\\s*(\\w*)')
+	type = '[\\w:]+(\\<([\\w:]*(\\s*\\*)?\\s*)(\\,\\s*[\\w:]*(\\s*\\*)?\\s*)*\\>\\s*)?(\\s*\\*)?\\s*'
+	p = re.compile('Q_PROPERTY\\((?P<type>' + type + ')(?P<name>\\w*)\\s*READ\\s*(?P<read>\\w*)')
 	m = p.match(line)
 	if not(m):
 		raise BaseException('Invalid property: ' + line)
-	type = m.group(1)
-	name = m.group(2)
-	read = m.group(3)
+	type = m.group("type")
+	name = m.group("name")
+	read = m.group("read")
 
 	# Extract the write function
 	p = re.compile('WRITE\\s*(\\w*)')
