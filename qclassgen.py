@@ -84,14 +84,22 @@ def process(lines, line):
 
 	if not(find_start(lines, type + 'm_' + name)):
 		code =  '\t' + type + 'm_' + name;
-		if type.endswith('*'):
+		if type.endswith('*') or type == 'int':
 			code += ' = 0'
+		if type == 'bool':
+			code += ' = false'
 		code += ';\n'
 		if write or notify: private += code
 		else: protected += code
 
 	if not(find_start(lines, type + read + '(')):
-		public += ('\t' + type + read + '() {\n' + 
+		return_type = type; 
+		if not(type.endswith('*')) and (
+				type.startswith('QVariantMap') or type.startswith('QMap') or 
+				type.startswith('QStringList') or type.startswith('QList')):
+			print 'Modifyable property: ' + name
+			return_type += "&";
+		public += ('\t' + return_type + read + '() {\n' + 
 				'\t\treturn m_' + name + ';\n' +
 				'\t}\n')
 
