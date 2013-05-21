@@ -81,6 +81,13 @@ def process(lines, line):
 	notify = ""
 	if m:
 		notify = m.group(1)
+		
+	# Extract the reset slot
+	p = re.compile('RESET\\s*(\\w*)')
+	m = p.search(line)
+	reset = ""
+	if m:
+		reset = m.group(1)
 
 	if not(find_start(lines, type + 'm_' + name)):
 		code =  '\t' + type + 'm_' + name;
@@ -118,9 +125,15 @@ def process(lines, line):
 		if notify:
 			protected += '\t\temit ' + notify + '(' + name + ');\n'
 		protected += '\t}\n'
+		write = writeName
 
 	if notify and not(find_start(lines, 'void ' + notify + '(')):
 		signals += '\tvoid ' + notify + '(' + type + name + ');\n'
+		
+	if reset and not(find_start(lines, 'void ' + reset + '(')):
+		public_slots += ('\tvoid ' + reset + '() {\n' +
+				'\t\t' + writeName + '(0);\n' +
+				'\t}\n')
 
 	return
 
