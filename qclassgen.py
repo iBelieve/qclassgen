@@ -101,12 +101,20 @@ def process(lines, line):
 
 	if not(find_start(lines, type + read + '()')):
 		return_type = type; 
+		const = 'const '
 		if not(type.endswith('*')) and (
 				type.startswith('QVariantMap') or type.startswith('QMap') or 
 				type.startswith('QStringList') or type.startswith('QList')):
 			print 'Modifyable property: ' + name
-			return_type += "&";
-		public += ('\t' + return_type + read + '() {\n' + 
+			const = ''
+			return_type += '&';
+		elif not(type.endswith('*') or 
+				type == 'bool' or type == 'char' or 
+				type == 'int' or type == 'long' or 
+				type == 'float' or type == 'double'):
+			const = 'const '
+			return_type = 'const ' + return_type + '&';
+		public += ('\t' + return_type + read + '() ' + const + '{\n' + 
 				'\t\treturn m_' + name + ';\n' +
 				'\t}\n')
 
