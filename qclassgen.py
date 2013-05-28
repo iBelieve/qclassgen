@@ -91,29 +91,35 @@ def process(lines, line):
 
 	if not(find_start(lines, type + 'm_' + name)):
 		code =  '\t' + type + 'm_' + name;
-		if type.endswith('*') or type.startswith('int'):
+		if type.endswith('*'):
+			code += ' = nullptr'
+		elif (type.startswith('char') or 
+				type.startswith('int')   or type.startswith('long') or 
+				type.startswith('float') or type.startswith('double')):
 			code += ' = 0'
-		if type.startswith('bool'):
+		elif type.startswith('bool'):
 			code += ' = false'
 		code += ';\n'
 		if write or notify: private += code
 		else: protected += code
 
-	if not(find_start(lines, type + read + '()')):
-		return_type = type; 
+	const = ''
+	return_type = type
+	if not(type.endswith('*')) and (
+			type.startswith('QVariantMap') or type.startswith('QMap') or 
+			type.startswith('QStringList') or type.startswith('QList')):
+		print 'Modifyable property: ' + name
+		return_type += '&'
+		type = 'const ' + type + '&'
+	elif not(type.endswith('*') or 
+			type.startswith('bool')  or type.startswith('char') or 
+			type.startswith('int')   or type.startswith('long') or 
+			type.startswith('float') or type.startswith('double')):
 		const = 'const '
-		if not(type.endswith('*')) and (
-				type.startswith('QVariantMap') or type.startswith('QMap') or 
-				type.startswith('QStringList') or type.startswith('QList')):
-			print 'Modifyable property: ' + name
-			const = ''
-			return_type += '&';
-		elif not(type.endswith('*') or 
-				type == 'bool' or type == 'char' or 
-				type == 'int' or type == 'long' or 
-				type == 'float' or type == 'double'):
-			const = 'const '
-			return_type = 'const ' + return_type + '&';
+		return_type = type = 'const ' + return_type + '&'
+	
+
+	if not(find_start(lines, type + read + '()')):
 		public += ('\t' + return_type + read + '() ' + const + '{\n' + 
 				'\t\treturn m_' + name + ';\n' +
 				'\t}\n')
